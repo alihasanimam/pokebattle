@@ -1,0 +1,19 @@
+<!-- Logout Modal-->
+<div class="modal fade" id="deleteBattleModal" tabindex="-1" role="dialog" aria-labelledby="pokebattleDeleteModalLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">If you delete this battle, it will be permanently removed!</div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-danger" type="button" @click="deleteBattle()"><i class="rotate-n-15 fas fa-hashtag"></i> Delete</button>
+        </div>
+    </div>
+</div>
+</div>

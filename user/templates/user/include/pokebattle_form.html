@@ -1,0 +1,147 @@
+{% load static %}
+<div class="modal fade" id="formHashmapModal" tabindex="-1" role="dialog" aria-labelledby="formHashmapLabel"
+aria-hidden="true">
+<div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">New Battle</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p v-for="(error, field) in errors" class="alert alert-danger">{(field)}: {(error.toString())}</p>
+            <form v-show="!winner">
+                <div class="form-row">
+                    <div class="form-group col-md-6">
+                        <label for="inputTitle">Challenger</label>
+                        <input type="text" v-on:blur="loadChallenger()" required class="form-control mb-3" id="inputChallenger" placeholder="Pokemon Name">
+                        <div v-if="!errors.challenger" class="card mx-auto" style="width: 18rem;">
+                            <img v-if="challenger.sprites" class="card-img-top mx-auto" v-bind:src="challenger.sprites.front_default" alt="Pokemon" style="height: 180px; width: auto; display: block;">
+                            <div class="card-body">
+                              <h5 class="card-title text-uppercase">{(challenger.name)}</h5>
+                            </div>
+                            <ul v-if="challenger.name" class="list-group list-group-flush">
+                              <li class="list-group-item"><b>Species: </b>{(challenger.species.name)}</li>
+                              <li class="list-group-item"><b>Height: </b>{(challenger.height)}</li>
+                              <li class="list-group-item"><b>Weight: </b>{(challenger.weight)}</li>
+                            </ul>
+                            <div class="card">
+                                <!-- Card Header - Accordion -->
+                                <a href="#collapseStats" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                    <h6 class="m-0 font-weight-bold text-primary">Stats</h6>
+                                </a>
+                                <!-- Card Content - Collapse -->
+                                <div class="collapse" id="collapseStats">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li v-for="stat in challenger.stats" class="list-group-item">
+                                                <b>{(stat.stat.name)}</b>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{(stat.base_stat)}%</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="progress progress-sm mr-2">
+                                                            <div class="progress-bar bg-info" role="progressbar" v-bind:style="'width: '+stat.base_stat+'%'" v-bind:aria-valuenow="stat.base_stat" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <!-- Card Header - Accordion -->
+                                <a href="#collapseAbilities" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                    <h6 class="m-0 font-weight-bold text-primary">Abilities</h6>
+                                </a>
+                                <!-- Card Content - Collapse -->
+                                <div class="collapse" id="collapseAbilities">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li v-for="ability in challenger.abilities" class="list-group-item">
+                                                <b>{(ability.ability.name)}: </b>
+                                                <i v-for="i in ability.slot" class="fas fa-solid fa-bolt text-info">&nbsp;</i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                    <div class="form-group col-md-6">
+                        <label for="inputTitle">Defender</label>
+                        <input type="text" v-on:blur="loadDefender()" required class="form-control mb-3" id="inputDefender" placeholder="Pokemon Name">
+                        <div v-if="!errors.defender" class="card mx-auto" style="width: 18rem;">
+                            <img v-if="defender.sprites" class="card-img-top mx-auto" v-bind:src="defender.sprites.front_default" alt="Pokemon" style="height: 180px; width: auto; display: block;">
+                            <div class="card-body">
+                              <h5 class="card-title text-uppercase">{(defender.name)}</h5>
+                            </div>
+                            <ul v-if="defender.name" class="list-group list-group-flush">
+                              <li class="list-group-item"><b>Species: </b>{(defender.species.name)}</li>
+                              <li class="list-group-item"><b>Height: </b>{(defender.height)}</li>
+                              <li class="list-group-item"><b>Weight: </b>{(defender.weight)}</li>
+                            </ul>
+                            <div class="card">
+                                <!-- Card Header - Accordion -->
+                                <a href="#collapseStats" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                    <h6 class="m-0 font-weight-bold text-primary">Stats</h6>
+                                </a>
+                                <!-- Card Content - Collapse -->
+                                <div class="collapse" id="collapseStats">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li v-for="stat in defender.stats" class="list-group-item">
+                                                <b>{(stat.stat.name)}</b>
+                                                <div class="row no-gutters align-items-center">
+                                                    <div class="col-auto">
+                                                        <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{(stat.base_stat)}%</div>
+                                                    </div>
+                                                    <div class="col">
+                                                        <div class="progress progress-sm mr-2">
+                                                            <div class="progress-bar bg-info" role="progressbar" v-bind:style="'width: '+stat.base_stat+'%'" v-bind:aria-valuenow="stat.base_stat" aria-valuemin="0" aria-valuemax="100"></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <!-- Card Header - Accordion -->
+                                <a href="#collapseAbilities" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                    <h6 class="m-0 font-weight-bold text-primary">Abilities</h6>
+                                </a>
+                                <!-- Card Content - Collapse -->
+                                <div class="collapse" id="collapseAbilities">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            <li v-for="ability in defender.abilities" class="list-group-item">
+                                                <b>{(ability.ability.name)}: </b>
+                                                <i v-for="i in ability.slot" class="fas fa-solid fa-bolt text-info">&nbsp;</i>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                    </div>
+                </div>
+            </form>
+            <div class="card" v-if="winner">
+                <h1 class="text-center">Winner!</h1>
+                <img class="mx-auto" height="180px" v-bind:src="getWinnerImg()">
+                <h2 class="text-center text-uppercase">{(winner)}</h2>
+                <img class="mx-auto" height="256px" src="{% static 'img/pokeball.gif' %}">
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+            <button class="btn btn-primary" v-show="!winner" v-bind:class="{disabled: !challenger.name || !defender.name || errors.challenger || errors.defender}" type="button" @click="createBattle()"><i class="rotate-n-15 fas fa-hashtag"></i> Battle</button>
+        </div>
+    </div>
+</div>
+</div>

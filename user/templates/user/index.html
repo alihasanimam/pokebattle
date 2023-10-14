@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% load static %}
+{% load account %}
+
+{% block content %}
+    <div id="pokebattle" v-cloak>
+        <!-- Page Heading -->
+        <div v-show="alert && errors.pokemon" class="alert alert-danger" role="alert">
+            <strong>{(errors.pokemon)}</strong>
+            <button type="button" v-on:click="alert=false" class="close" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="d-sm-flex align-items-center justify-content-between mb-4">
+            <h1 class="h3 mb-0 text-gray-800">My Battles</h1>
+            <button class="btn btn-primary" @click="newBattle()"><i class="rotate-n-15 fas fa-hashtag"></i> New Battle</button>
+        </div>
+        <vue-simple-spinner v-if="loading"></vue-simple-spinner>
+        {% include 'user/include/pokebattle_list.html' %}
+        {% include 'user/include/pokebattle_form.html' %}
+        {% include 'user/include/pokebattle_delete.html' %}
+        {% include 'user/include/pokemon_view.html' %}
+    </div>
+    <script>
+        // Vue.use()
+        PokeBattle = new Vue({
+            delimiters: ['{(', ')}'],
+            data: {
+                loading: true,
+                count: 0,
+                next: '',
+                previous: '',
+                selected: null,
+                pokemon: {},
+                challenger: {},
+                defender: {},
+                winner: '',
+                battles: [],
+                element: {key: '', value: ''},
+                errors: {},
+                alert: true,
+            },
+            methods: {
+                listBattles: function(url) {
+                    var vm = this;
+                    vm.loading = true;
+                    axios.get(url).then(function(response){
+                        vm.count = response.data.count,
+                        vm.next = response.data.next,
+                        vm.previous = response.data.previous,
+                        vm.battles = response.data.results;
+                        vm.loading = false;
+                    }).catch(function (error) {
+                        vm.loading = false;
+                    });
+                },
+                searchBattles: function() {
+                    var search = $("#battle-search").val();
+                    this.listBattles('/api/battles/?search='+search);
+                },
+                newBattle: function() {
+                    this.errors = {};
+                    this.selected = null;
+                    this.challenger = {};
+                    this.defender = {};
+                    this.winner = '';
+                    $('#formHashmapModal').modal('show');
+                },
+                viewPokemon: function(name) {
+                    var vm = this;
+                    vm.errors.pokemon = '';
+                    if (!name) {
+                        name = $("#pokebattle-search").val();
+                    }
+                    this.getPokemon(name, 'pokemon', function(pokemon){
+                        vm.pokemon = pokemon;
+                        $('#viewPokemonModal').modal('show');
+                    });
+                },
+                loadChallenger: function() {
+                    var vm = this;
+                    vm.errors.challenger = '';
+                    var name = $("#inputChallenger").val();
+                    this.getPokemon(name, 'challenger', function(pokemon){
+                        vm.challenger = pokemon;
+                    });
+                },
+                loadDefender: function() {
+                    var vm = this;
+                    vm.errors.defender = '';
+                    var name = $("#inputDefender").val();
+                    this.getPokemon(name, 'defender', function(pokemon){
+                        vm.defender = pokemon;
+                    });
+                },
+                getPokemon: function(name, ref, callback) {
+                    this.errors = {};
+                    var vm = this;
+                    vm.loading = true;
+                    axios.get('/api/battles/pokemon/?name='+name).then(function(response){
+                        vm.loading = false;
+                        callback(response.data);
+                    }).catch(function (error) {
+                        console.log(error.response.data);
+                        vm.loading = false;
+                        vm[ref] = {};
+                        vm.errors[ref] = error.response.data.detail;
+                        vm.alert = true;
+                    });
+                },
+                createBattle: function() {
+                    var vm = this;
+                    vm.loading = true;
+                    vm.winner = '!';
+                    axios.post('/api/battles/', { challenger: vm.challenger.name, defender: vm.defender.name}).then(function(response){
+                        vm.battles.unshift(response.data);
+                        vm.loading = false;
+                        vm.winner = response.data.winner;
+                    }).catch(function (error) {
+                        vm.errors.view = error.response.data;
+                        vm.loading = false;
+                    });
+                },
+                deleteBattle: function() {
+                    var vm = this;
+                    axios.delete(this.battles[this.selected].url).then(function(response){
+                        vm.battles.splice(vm.selected, 1);
+                        $('#deleteBattleModal').modal('hide');
+                        vm.selected = null;
+                    });
+                },
+                getWinnerImg: function() {
+                    if(!this.winner) return '';
+                    return this.winner == this.challenger.name ? this.challenger.sprites.front_default : this.defender.sprites.front_default
+                },
+            },
+            created: function(){
+                this.listBattles('/api/battles/');
+            }
+        }).$mount("#pokebattle");
+    </script>
+    
+{% endblock content %}

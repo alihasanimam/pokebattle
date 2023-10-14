@@ -1,0 +1,53 @@
+<div class="row">
+    <div class="col-lg-12 mb-4">
+          <form
+            onsubmit="PokeBattle.searchBattles(); return false;"
+            class="form-inline navbar-search">
+            <div class="form-group mb-1">
+                <input id="battle-search" name="search" type="text" class="form-control border-0 small" placeholder="Filter Battles"
+                    aria-label="Search" aria-describedby="basic-addon2">
+                <div class="input-group-append">
+                    <button type="submit" class="btn btn-primary" type="button">
+                        <i class="fas fa-search fa-sm"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+        <!-- Illustrations -->
+        <div class="card shadow mb-4">
+            <div class="card-body">
+                <table id="pokebattle-list" class="table table-borderless table-hover">
+                    <thead>
+                      <tr>
+                        <th scope="col">Challenger</th>
+                        <th scope="col">Defender</th>
+                        <th scope="col">Winner</th>
+                        <th scope="col">Battled At</th>
+                        <th scope="col"></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <template v-for="(battle, index) in battles">
+                      <tr>
+                        <td><a href="#" v-on:click="viewPokemon(battle.challenger)">{(battle.challenger)}</a></td>
+                        <td><a href="#" v-on:click="viewPokemon(battle.defender)">{(battle.defender)}</a></td>
+                        <td><a href="#" v-on:click="viewPokemon(battle.winner)">{(battle.winner)}</a></td>
+                        <td>{(new Date(battle.created_at).toLocaleString())}</td>
+                        <td>
+                          <small><i class="fas fa-fw fa-trash" role="button" data-toggle="modal" @click="selected=index" data-target="#deleteBattleModal"></i></small>
+                        </td>
+                      </tr>
+                    </template>
+                    </tbody>
+                  </table>
+                  <nav aria-label="Page navigation">
+                    <small>Total Battles: <span class="text-primary">{(battles.length)}</span></small>
+                    <ul class="pagination float-right">
+                      <li class="page-item" v-bind:class="{ disabled: !previous }"><a class="page-link" href="javascript:void(0);" @click="listBattles(previous)">Previous</a></li>
+                      <li class="page-item" v-bind:class="{ disabled: !next }"><a class="page-link" href="javascript:void(0);" @click="listBattles(next)">Next</a></li>
+                    </ul>
+                  </nav>
+            </div>
+        </div>
+    </div>
+</div>

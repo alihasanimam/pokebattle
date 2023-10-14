@@ -1,0 +1,74 @@
+<div class="modal fade" id="viewPokemonModal" tabindex="-1" role="dialog" aria-labelledby="viewPokemonLabel"
+aria-hidden="true">
+<div class="modal-dialog" role="document">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Pokemon</h5>
+            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p v-for="(error, field) in errors" class="alert alert-danger">{(field)}: {(error.toString())}</p>
+            
+            <div class="card mx-auto" style="width: 18rem;">
+                <img v-if="pokemon.sprites" class="card-img-top mx-auto" v-bind:src="pokemon.sprites.front_default" alt="Pokemon" style="height: 180px; width: auto; display: block;">
+                <div class="card-body">
+                  <h5 class="card-title text-uppercase">{(pokemon.name)}</h5>
+                </div>
+                <ul v-if="pokemon.name" class="list-group list-group-flush">
+                  <li class="list-group-item"><b>Species: </b>{(pokemon.species.name)}</li>
+                  <li class="list-group-item"><b>Height: </b>{(pokemon.height)}</li>
+                  <li class="list-group-item"><b>Weight: </b>{(pokemon.weight)}</li>
+                </ul>
+                <div class="card">
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapseStats" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-primary">Stats</h6>
+                    </a>
+                    <!-- Card Content - Collapse -->
+                    <div class="collapse" id="collapseStats">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li v-for="stat in pokemon.stats" class="list-group-item">
+                                    <b>{(stat.stat.name)}</b>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{(stat.base_stat)}%</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="progress progress-sm mr-2">
+                                                <div class="progress-bar bg-info" role="progressbar" v-bind:style="'width: '+stat.base_stat+'%'" v-bind:aria-valuenow="stat.base_stat" aria-valuemin="0" aria-valuemax="100"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <!-- Card Header - Accordion -->
+                    <a href="#collapseAbilities" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                        <h6 class="m-0 font-weight-bold text-primary">Abilities</h6>
+                    </a>
+                    <!-- Card Content - Collapse -->
+                    <div class="collapse" id="collapseAbilities">
+                        <div class="card-body">
+                            <ul class="list-group list-group-flush">
+                                <li v-for="ability in pokemon.abilities" class="list-group-item">
+                                    <b>{(ability.ability.name)}: </b>
+                                    <i v-for="i in ability.slot" class="fas fa-solid fa-bolt text-info">&nbsp;</i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+              </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" type="button" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+</div>
