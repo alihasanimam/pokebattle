@@ -1,0 +1,59 @@
+[
+    {
+        "model": "user.user",
+        "pk": 2,
+        "fields": {
+            "password": "pbkdf2_sha256$216000$JobGZU7LBx7y$v/lMoYqimrgyepod7CkODY/lZ+Ep5kqMj6aaXBGVbSE=",
+            "last_login": "2023-10-15T04:23:25.182Z",
+            "is_superuser": false,
+            "username": "user",
+            "first_name": "",
+            "last_name": "",
+            "email": "user@example.com",
+            "is_staff": false,
+            "is_active": true,
+            "date_joined": "2023-10-15T04:22:58.249Z",
+            "groups": [],
+            "user_permissions": []
+        }
+    },
+    {
+        "model": "user.battle",
+        "pk": 4,
+        "fields": {
+            "challenger": "ditto",
+            "defender": "lucario",
+            "winner": "lucario",
+            "user": 2,
+            "data": [],
+            "created_at": "2023-10-15T11:19:33.603Z",
+            "updated_at": "2023-10-15T11:19:33.603Z"
+        }
+    },
+    {
+        "model": "user.battle",
+        "pk": 5,
+        "fields": {
+            "challenger": "ditto",
+            "defender": "gengar",
+            "winner": "gengar",
+            "user": 2,
+            "data": [],
+            "created_at": "2023-10-15T11:20:40.762Z",
+            "updated_at": "2023-10-15T11:20:40.762Z"
+        }
+    },
+    {
+        "model": "user.battle",
+        "pk": 6,
+        "fields": {
+            "challenger": "gengar",
+            "defender": "lucario",
+            "winner": "lucario",
+            "user": 2,
+            "data": [],
+            "created_at": "2023-10-15T11:25:42.601Z",
+            "updated_at": "2023-10-15T11:25:42.601Z"
+        }
+    }
+]
