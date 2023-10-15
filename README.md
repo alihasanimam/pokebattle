@@ -2,11 +2,6 @@
 
 A simple application to create and manage pokebattle with REST API!
 
-<!-- ## Demo
-- Website: [http://localhost:8000/](http://localhost:8000/)
-- Default Admin: `username: admin, password: adminadmin`
-- Default User: `username: user, password: useruser` -->
-
 ## API
 - Rest API Root: [http://localhost:8000/api/](http://localhost:8000/api/)
 - Swagger Documentation: [http://localhost:8000/swagger/](http://localhost:8000/swagger/)
@@ -46,7 +41,7 @@ git clone git@github.com:alihasanimam/pokebattle.git
 cd pokebattle
 docker-compose up --build
 ```
-You should see all the resources including the web server startup in your terminal. Now, open up another terminal window in the same directory.
+You should see all the resources including the web server startup in your terminal. When everything is complete, press `Ctrl+C` to exit from docker-compose.
 
 3. Populate Postgres DB
 ```sh
@@ -58,7 +53,15 @@ docker-compose exec web python manage.py migrate
 docker-compose exec web python manage.py loaddata user/fixtures/*
 ```
 
-Now refresh `localhost:8000`. That should be enough for you to run the project locally. Seriously, that's it! One thing to note is if you change some settings in the Dockerfile or docker-compose.yml files, you'll need to rebuild the docker container.
+## Demo
+Lunch the application
+```sh
+docker-compose up
+```
+Now go to [localhost:8000/](http://localhost:8000/). That should be enough for you to run the project locally.
+- Website: [http://localhost:8000/](http://localhost:8000/)
+- Default Admin: `username: admin, password: adminadmin`
+- Default User: `username: user, password: useruser`
 
 ## Screenshots
 Here is what your app should look like when you visit `localhost:8000`.
