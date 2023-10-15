@@ -38,24 +38,24 @@ As a prerequisite please make sure you have the following tools already installe
 ## Setup in under 5 minutes!
 1. Clone this repo
 ```sh
-$ git clone git@github.com:alihasanimam/pokebattle.git
+git clone git@github.com:alihasanimam/pokebattle.git
 ```
 
 2. Build the Docker Container
 ```sh
-$ cd pokebattle
-$ docker-compose up --build
+cd pokebattle
+docker-compose up --build
 ```
 You should see all the resources including the web server startup in your terminal. Now, open up another terminal window in the same directory.
 
 3. Populate Postgres DB
 ```sh
-$ docker-compose exec web python manage.py migrate
+docker-compose exec web python manage.py migrate
 ```
 
 4. Seed initial data from fixutres (optional)
 ```sh
-$ docker-compose exec web python manage.py loaddata user/fixtures/*
+docker-compose exec web python manage.py loaddata user/fixtures/*
 ```
 
 Now refresh `localhost:8000`. That should be enough for you to run the project locally. Seriously, that's it! One thing to note is if you change some settings in the Dockerfile or docker-compose.yml files, you'll need to rebuild the docker container.
